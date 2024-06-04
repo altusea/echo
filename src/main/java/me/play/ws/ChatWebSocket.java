@@ -29,10 +29,12 @@ public class ChatWebSocket {
     public void onClose(@PathParam("username") String username) {
         ChatMessage departure = new ChatMessage(MessageType.USER_LEFT, username, null);
         connection.broadcast().sendTextAndAwait(departure);
+        log.info("onClose with username [{}]", username);
     }
 
     @OnTextMessage(broadcast = true)
-    public ChatMessage onMessage(ChatMessage message) {
+    public ChatMessage onMessage(@PathParam("username") String username, ChatMessage message) {
+        log.info("onMessage with username [{}] and message [{}]", username, message);
         return message;
     }
 
